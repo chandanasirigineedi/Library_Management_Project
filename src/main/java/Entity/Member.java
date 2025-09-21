@@ -1,23 +1,23 @@
 package Entity;
 
 public class Member {
-    private Long memberId;
+    private Integer memberId;
     private String name;
     private String memberType;
-    private  Long PhoneNumber;
+    private Integer PhoneNumber;
 
-    public Member(Long memberId, String name, String memberType, Long phoneNumber) {
+    public Member(Integer memberId, String name, String memberType, Integer phoneNumber) {
         this.memberId = memberId;
         this.name = name;
         this.memberType = memberType;
-        PhoneNumber = phoneNumber;
+        this.PhoneNumber = phoneNumber;
     }
 
-    public Long getMemberId() {
+    public Integer getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(Long memberId) {
+    public void setMemberId(Integer memberId) {
         this.memberId = memberId;
     }
 
@@ -37,11 +37,11 @@ public class Member {
         this.memberType = memberType;
     }
 
-    public Long getPhoneNumber() {
+    public Integer getPhoneNumber() {
         return PhoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
-        PhoneNumber = phoneNumber;
+    public void setPhoneNumber(Integer phoneNumber) {
+       this.PhoneNumber = phoneNumber;
     }
 }

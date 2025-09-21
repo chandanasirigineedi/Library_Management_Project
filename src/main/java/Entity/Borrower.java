@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Borrower {
 
-    private Long bookId;
+    private Integer bookId;
     private Integer memberId;
     private LocalDate borrowDate; //When the borrower checked it out
     private LocalDate dueDate; //The date by which the item should have been returned
@@ -12,7 +12,7 @@ public class Borrower {
     private String status; //Returned, Overdue, Lost, or Renewed
     private Integer fine; //Penalties for late returns or lost items
 
-    public Borrower(Long bookId, Integer memberId, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, String status, Integer fine) {
+    public Borrower(Integer bookId, Integer memberId, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, String status, Integer fine) {
         this.bookId = bookId;
         this.memberId = memberId;
         this.borrowDate = borrowDate;
@@ -22,11 +22,11 @@ public class Borrower {
         this.fine = fine;
     }
 
-    public Long getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 
