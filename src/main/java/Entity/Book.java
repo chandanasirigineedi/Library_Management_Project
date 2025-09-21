@@ -1,20 +1,15 @@
 package Entity;
 
 public class Book {
-    private Long bookId;
+    private Integer bookId;
     private String title;
     private Integer ISBN;
     private String author;
     private boolean isIssued;
     private Integer copies;
 
-    public Book(Long sBookId, String sISBN, String sAuthor, String sTitle, Boolean isIssued, Integer copies) {
-    }
 
-    public Book(Long sMemberId, String sName, String sMemberType, String sPhoneNumber) {
-    }
-
-    Book(Long sBookId,Integer sISBN,String sAuthor,String sTitle,boolean isIssued,Integer copies){
+    public Book(Integer sBookId,Integer sISBN,String sAuthor,String sTitle,boolean isIssued,Integer copies){
         this.bookId=sBookId;
         this.ISBN=sISBN;
         this.author=sAuthor;
@@ -22,12 +17,10 @@ public class Book {
         this.isIssued=isIssued;
         this.copies=copies;
     }
-
-
-    public Long getBookId(){
+    public Integer getBookId(){
         return this.bookId;
     }
-    public void setBookId(Long bookId){
+    public void setBookId(Integer bookId){
         this.bookId=bookId;
     }
     public String getTitle() {
