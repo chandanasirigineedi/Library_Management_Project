@@ -7,6 +7,11 @@ import java.util.List;
 
 public class MemberServiceImpl  implements MemberService{
     MemberRepository memberrepository;
+
+    public MemberServiceImpl() {
+        this.memberrepository = new MemberRepository();
+    }
+
     @Override
     public boolean addMember(Member member) {
 

@@ -8,6 +8,7 @@ import java.util.List;
 public class MemberRepository {
 
         List<Member> memberDB= new ArrayList<>();
+
     public boolean addMember(Member member) {
         memberDB.add(member);
         return true;
@@ -18,6 +19,7 @@ public class MemberRepository {
         {
             emember.setMemberType(memberType);
             emember.setPhoneNumber(phoneNumber);
+
             return true;
         }else
         {

@@ -25,7 +25,7 @@ public class ToDoController {
     public void runToDoApp(){
         while(true){
             showMenu();
-            System.out.println(" \t\t\t\t\t\t\t\t**********Enter the Action Number************");
+            System.out.println("\nEnter the Action Number");
             String userAction = scanner.nextLine();
             performAction(Integer.parseInt(userAction));
         }
@@ -36,10 +36,6 @@ public class ToDoController {
         System.out.println("2. Manage member (CRUD)");
         System.out.println("3. Manage Borrower (CRUD)");
         System.out.println("4. Exit");
-    }
-    public  String getUserInput(String inputMessage){
-        System.out.println(inputMessage+":");
-        return System.console().readLine();
     }
     private void performAction(int action){
         switch(action){
@@ -59,8 +55,8 @@ public class ToDoController {
                 System.out.println("3.Update Members");
                 System.out.println("4.Delete Member");
                 System.out.println("Enter the Action Number");
-                String userInput= scanner.nextLine();
-                ManageMembers(Integer.parseInt(userInput));
+                String userAction1= scanner.nextLine();
+                ManageMembers(Integer.parseInt(userAction1));
             break;
             case 3:System.out.println("1.Register Borrower ");
                    System.out.println("2.View Borrowers");
@@ -101,29 +97,35 @@ public class ToDoController {
                     for(Book ebook:bookList){
                      System.out.println(ebook.getBookId()+" , "+ebook.getISBN()+" , "+ebook.getTitle()+" , "+ebook.getAuthor()+" , "+ebook.isIssued()+" , "+ebook.getCopies());
                     }
-                return true;
-            case 3:
-                System.out.println("Update the book");
-                System.out.print("Enter Book ID : ");
-                Integer id= scanner.nextInt();
-                System.out.print("Title :");
-                String title=scanner.nextLine();
-                System.out.print("Author :");
-                String author=scanner.nextLine();
-                System.out.println( bookService.updateBook(id,author,title));
-                return true;
+                    return true;
+            case 3: System.out.println("Update the book");
+                    System.out.print("Enter Book ID : ");
+                    Integer id= scanner.nextInt();
+                    System.out.print("Title :");
+                    String title1=scanner.next();
+                    System.out.print("Author :");
+                    String author=scanner.nextLine();
+                    System.out.println(" ");
+                    String s=bookService.updateBook(id,author,title1);
+                    System.out.println(s);
+                     return true;
+                   // System.out.println();
+
             case 4: System.out.print("Enter Book ID to delete: ");
                     Integer bid = scanner.nextInt();
                     List<Book> booklist=bookService.deleteBook(bid);
-//                  Book ebook1 =listOfBooks.stream().filter(b->b.getBookId()==bid).findFirst().orElse(null); ;
+
                     if (booklist != null) {
+                        booklist.stream().forEach(book ->System.out.println(book.getAuthor()));
                         System.out.println(" Book deleted successfully!");
-                    } else {
-                            System.out.println("Book not found.");
-                    }
+
+                      } else
+                        System.out.println("Book not found.");
+                System.out.println(" ");
                     return true;
+
             case 5: System.exit(200);
-               return true;
+                    return true;
             default:
                 System.out.println("Invalid Action");
 
@@ -133,46 +135,53 @@ public class ToDoController {
     private boolean ManageMembers(int action) {
         switch(action){
             case 1: System.out.println("Register the Member ");
-                System.out.print("memberID :");
+                System.out.print("Enter memberID :");
                 Integer sMemberId= Integer.parseInt(scanner.nextLine());
-                String sName=getUserInput("Enter name");
-                String sMemberType=getUserInput("Enter memberType");
-                Integer sPhoneNumber= Integer.parseInt(getUserInput("Enter the phoneNumber"));
+                System.out.print("Enter Name :");
+                String sName=scanner.nextLine();
+                System.out.print("Enter MemberType :");
+                String sMemberType=scanner.nextLine();
+                System.out.print("Enter PhoneNumber :");
+                Integer sPhoneNumber= Integer.parseInt(scanner.nextLine());
                 Member  member= new Member(sMemberId,sName,sMemberType,sPhoneNumber);
                 memberService.addMember(member);
                 System.out.println("Member added successfully");
-                return true;
+                break;
             case 2: System.out.println("View the Member");
-                for(Member emember:listOfMembers){
+                for(Member emember:memberService.getMember()){
                     System.out.println(emember.getMemberId()+" , "+emember.getName()+" , "+emember.getMemberType()+" , "+emember.getPhoneNumber());
                 }
-                return true;
+                break;
             case 3:
                 System.out.println("Update the Member");
-                System.out.print("Enter Member ID to update: ");
-                Integer id= scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Enter new MemberType: ");
-                String memberType = scanner.nextLine();
-                System.out.print("Enter new PhoneNumber: ");
-                Integer phoneNumber= Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter Member ID to update: ");
+                Integer id= Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter Member Type = " );
+                String memberType=scanner.nextLine();
+                System.out.println("Enter phoneNumber = ");
+                Integer phoneNumber=Integer.parseInt(scanner.nextLine());
+
                 if(memberService.updateMember(id,memberType,phoneNumber))
                 {
                     System.out.println(" Member updated successfully!");
                 } else {
                     System.out.println(" Member not found.");
                 }
-                return true;
+                break;
             case 4: System.out.print("Enter Member ID to delete: ");
                 Integer mid = scanner.nextInt();
-                if (memberService.deleteMember(mid)) {
-                  System.out.println(mid+" Member deleted successfully!");
-                } else {
-                    System.out.println("Member not found.");
+                try {
+                    if (memberService.deleteMember(mid)) {
+                        System.out.println(mid + " Member deleted successfully!");
+                    } else {
+                        System.out.println("Member not found.");
+                    }
+                }catch (Exception e){
+                    System.out.println("Eception raised");
                 }
-                return true;
+                break;
             case 5: System.exit(200);
-                return true;
+                break;
             default:
                 System.out.println("Invalid Action");
 
@@ -183,11 +192,13 @@ public class ToDoController {
     private boolean ManageBorrowers(int action){
         switch(action){
             case 1: System.out.println("Borrow the Book ");
-                Integer sBookId= Integer.parseInt(getUserInput("Enter bookID"));
-                Integer sMemberId=Integer.parseInt(getUserInput("Enter MemberId"));
+                System.out.print("Enter BookID :");
+                Integer sBookId= scanner.nextInt();
+                System.out.print("Enter memberID :");
+                Integer sMemberId=scanner.nextInt();
                 LocalDate borrowDate= LocalDate.now();
                 LocalDate dueDate = borrowDate.plusDays(14);
-                String status=getUserInput("Enter Status");
+                String status=scanner.nextLine();
                 Borrower  borrower= new Borrower(sBookId,sMemberId,borrowDate,dueDate,null,status,0);
                 listOfBorrower.add(borrower);
                 System.out.println("Book Issued successfully");
