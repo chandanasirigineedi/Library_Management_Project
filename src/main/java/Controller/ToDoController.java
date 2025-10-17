@@ -177,7 +177,7 @@ public class ToDoController {
                         System.out.println("Member not found.");
                     }
                 }catch (Exception e){
-                    System.out.println("Eception raised");
+                    System.out.println("Exception raised");
                 }
                 break;
             case 5: System.exit(200);
