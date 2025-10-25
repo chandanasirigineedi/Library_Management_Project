@@ -38,4 +38,8 @@ public class MemberRepository {
     public List<Member> getMember() {
         return memberDB;
     }
+    public Integer getMemberId(Integer mid){
+        Member emember=memberDB.stream().filter(b->b.getMemberId()==mid).findFirst().orElse(null);
+        return emember.getMemberId();
+    }
 }

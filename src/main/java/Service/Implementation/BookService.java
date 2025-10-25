@@ -9,8 +9,7 @@ public interface BookService {
     public String updateBook(Integer bookId,String author,String title  );
     public List<Book> deleteBook(Integer bookId);
     public List<Book> getBook();
-
-
+    public Integer getBookId(Integer bookId,Integer ISBN );
 
 
 }

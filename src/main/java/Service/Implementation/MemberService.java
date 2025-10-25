@@ -9,6 +9,7 @@ public interface MemberService {
         public boolean updateMember(Integer memberId, String memberType,Integer phoneNumber);
         public boolean deleteMember(Integer memberId);
         public List<Member> getMember();
+        public  Integer getMemberId(Integer memberId);
 
 
 }

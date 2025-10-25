@@ -4,10 +4,7 @@ import DTO.BookStatus;
 import Entity.Book;
 import Entity.Borrower;
 import Entity.Member;
-import Service.Implementation.BookService;
-import Service.Implementation.BookServiceImpl;
-import Service.Implementation.MemberService;
-import Service.Implementation.MemberServiceImpl;
+import Service.Implementation.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -21,6 +18,7 @@ public class ToDoController {
     List<Borrower> listOfBorrower= new ArrayList<>();
     BookService bookService = new BookServiceImpl();
     MemberService memberService = new MemberServiceImpl();
+    BorrowerService borrowerService= new BorrowerServiceImpl() ;
     private Scanner scanner = new Scanner(System.in);
     public void runToDoApp(){
         while(true){
@@ -32,10 +30,10 @@ public class ToDoController {
     }
     private void showMenu(){
         System.out.println("\t\t\t\t\t\t\t***********Welcome to the Library Managemet App!*************");
-        System.out.println("1. Manage Book (CRUD)");
-        System.out.println("2. Manage member (CRUD)");
-        System.out.println("3. Manage Borrower (CRUD)");
-        System.out.println("4. Exit");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t1. Manage Book (CRUD)");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t2. Manage member (CRUD)");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t3. Manage Borrower (CRUD)");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t4. Exit");
     }
     private void performAction(int action){
         switch(action){
@@ -60,8 +58,7 @@ public class ToDoController {
             break;
             case 3:System.out.println("1.Register Borrower ");
                    System.out.println("2.View Borrowers");
-                   System.out.println("3.Update Borrowers");
-                   System.out.println("4.Delete Borrower");
+                   System.out.println("3.Return/Lost/Renewal Borrowers");
                    System.out.println("Enter the Action Number");
                    String userInput1= scanner.nextLine();
                    ManageBorrowers(Integer.parseInt(userInput1));
@@ -99,20 +96,19 @@ public class ToDoController {
                     }
                     return true;
             case 3: System.out.println("Update the book");
-                    System.out.print("Enter Book ID : ");
-                    Integer id= scanner.nextInt();
-                    System.out.print("Title :");
-                    String title1=scanner.next();
-                    System.out.print("Author :");
+                    System.out.println("Enter Book ID : ");
+                    Integer id= Integer.parseInt(scanner.nextLine());
+                    System.out.println("Title :");
+                    String title1=scanner.nextLine();
+                    System.out.println("Author :");
                     String author=scanner.nextLine();
                     System.out.println(" ");
                     String s=bookService.updateBook(id,author,title1);
                     System.out.println(s);
                      return true;
-                   // System.out.println();
 
-            case 4: System.out.print("Enter Book ID to delete: ");
-                    Integer bid = scanner.nextInt();
+            case 4: System.out.println("Enter Book ID to delete: ");
+                    Integer bid = Integer.parseInt(scanner.nextLine());
                     List<Book> booklist=bookService.deleteBook(bid);
 
                     if (booklist != null) {
@@ -168,8 +164,8 @@ public class ToDoController {
                     System.out.println(" Member not found.");
                 }
                 break;
-            case 4: System.out.print("Enter Member ID to delete: ");
-                Integer mid = scanner.nextInt();
+            case 4: System.out.println("Enter Member ID to delete: ");
+                Integer mid = Integer.parseInt(scanner.nextLine());
                 try {
                     if (memberService.deleteMember(mid)) {
                         System.out.println(mid + " Member deleted successfully!");
@@ -192,19 +188,23 @@ public class ToDoController {
     private boolean ManageBorrowers(int action){
         switch(action){
             case 1: System.out.println("Borrow the Book ");
-                System.out.print("Enter BookID :");
-                Integer sBookId= scanner.nextInt();
-                System.out.print("Enter memberID :");
-                Integer sMemberId=scanner.nextInt();
+                System.out.println("Enter BookID :");
+                Integer sBookId= Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter memberID :");
+                Integer sMemberId=Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter whether Book issued or not :");
+                String status=scanner.nextLine();
+                System.out.println(status);
                 LocalDate borrowDate= LocalDate.now();
                 LocalDate dueDate = borrowDate.plusDays(14);
-                String status=scanner.nextLine();
+
                 Borrower  borrower= new Borrower(sBookId,sMemberId,borrowDate,dueDate,null,status,0);
-                listOfBorrower.add(borrower);
+                borrowerService.addBorrower(borrower);
                 System.out.println("Book Issued successfully");
                 return true;
             case 2: System.out.println("View all Borrower");
-                for(Borrower borrower1:listOfBorrower){
+
+                for(Borrower borrower1:borrowerService.viewAllBorrower()){
                     System.out.println(borrower1.getBookId()+","+borrower1.getMemberId()+" , "+
                             borrower1.getBorrowDate()+" , "+borrower1.getDueDate()+" , "+
                             borrower1.getReturnDate()+","+borrower1.getStatus()+","+borrower1.getFine());
@@ -212,36 +212,21 @@ public class ToDoController {
                 return true;
             case 3:
                 System.out.println("Return the book");
-                System.out.print("Enter Member ID to update: ");
-                Integer mid= scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Enter Book ID to update: ");
-                Integer bid= scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Enter Book ISBN to update: ");
-                Integer ISBN= scanner.nextInt();
-                scanner.nextLine();
-                Member emember=listOfMembers.stream().filter(b->b.getMemberId()==mid).findFirst().orElse(null);
-                Book ebook=listOfBooks.stream().filter(b->b.getBookId()==bid &&b.getISBN()==ISBN).findFirst().orElse(null);
-                Borrower eborrower=listOfBorrower.stream().filter(b->b.getBookId()==ebook.getBookId() ).findFirst().orElse(null);
-                if(eborrower!=null)
-                {
-                    LocalDate edueDate = eborrower.getDueDate();
-                    LocalDate returnDate = LocalDate.now();
-                    if(edueDate.isAfter(returnDate)||edueDate.isEqual(returnDate)){
-                            eborrower.setReturnDate(returnDate);
-                            eborrower.setStatus("Returned");
-                    }
-                    if (edueDate.isBefore(returnDate)) {
-                        eborrower.setReturnDate(returnDate);
-                        eborrower.setFine((Period.between(edueDate, returnDate).getDays())*30);
-                        eborrower.setStatus("returned");
+                System.out.println("Enter Member ID to update: ");
+                Integer mid= Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter Book ID to update: ");
+                Integer bid= Integer.parseInt(scanner.nextLine());
+                System.out.println("Enter Book ISBN to update: ");
+                Integer ISBN= Integer.parseInt(scanner.nextLine());
+                System.out.println("Do you want return/renewal/Lost :");
+                String status1=scanner.nextLine();
+                Integer bid1=bookService.getBookId(bid,ISBN);
+                Integer mid1= memberService.getMemberId(mid);
+                if(borrowerService.updateBorrower(status1,bid,mid))
+                    System.out.println("updated Book success");
+                else
+                    System.out.println("Member Not Found");
 
-                    }
-                    System.out.println(" Book returned successfully!");
-                } else {
-                    System.out.println(" Member not found.");
-                }
                 return true;
             case 5: System.exit(200);
                 return true;

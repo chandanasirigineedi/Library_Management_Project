@@ -36,4 +36,8 @@ public class BookServiceImpl implements BookService {
     }
     //add, update,delete,get
 
+    @Override
+    public Integer getBookId(Integer bookId,Integer ISBN ) {
+        return bookRepository.getBookId(bookId, ISBN);
+    }
 }

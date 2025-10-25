@@ -12,14 +12,14 @@ public class BookRepository {
 
         public Integer addBook(Book book){
           //  bookDB.add(new Book(578,1234,"warts","chemistry",false,5));
-            bookDB.add(new Book(123,12,"Edburg","physics",false,3));
-            bookDB.add(new Book(234,15,"meyer","Mathametics",false,3));
+            bookDB.add(new Book(10,01,"Edburg","physics",false,3));
+            bookDB.add(new Book(11,111,"meyer","Mathametics",false,3));
             bookDB.add(book);
             return book.getBookId();
         }
         public  String updateBook(Integer bookId,String title,String author){
-            bookDB.add(new Book(45,17,"ytru","Science",false,7));
-            bookDB.add(new Book(67,17,"rfgh","Biology",false,7));
+           bookDB.add(new Book(16,61,"ytru","Science",false,7));
+            bookDB.add(new Book(17,71,"rfgh","Biology",false,7));
             Book ebook=  bookDB.stream().filter(b->b.getBookId()==bookId).findFirst().orElse(null);
             if(ebook!=null){
                 System.out.println("bookId = " + ebook.getBookId()+ ", title = " + ebook.getTitle()+ ", author = " +ebook.getAuthor());
@@ -43,13 +43,16 @@ public class BookRepository {
 
         }
         public List<Book> get(){
-            bookDB.add(new Book(578,1234,"warts","chemistry",false,5));
-            bookDB.add(new Book(123,12,"Edburg","physics",false,3));
-            bookDB.add(new Book(234,15,"meyer","Mathametics",false,3));
+            bookDB.add(new Book(12,21,"warts","chemistry",false,5));
+            bookDB.add(new Book(13,31,"Edburg","physics",false,3));
+            bookDB.add(new Book(14,41,"meyer","Mathametics",false,3));
             System.out.println(bookDB.get(0).getBookId());
             return bookDB;
         }
-
+        public Integer getBookId(Integer bookId,Integer ISBN ){
+            Book ebook=bookDB.stream().filter(b->b.getBookId()==bookId ).findFirst().orElse(null);
+            return ebook.getBookId();
+        }
 
 
 }

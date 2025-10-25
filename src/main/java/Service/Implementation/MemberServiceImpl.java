@@ -33,4 +33,8 @@ public class MemberServiceImpl  implements MemberService{
     public List<Member> getMember() {
         return memberrepository.getMember();
     }
+
+    public Integer getMemberId(Integer memberId){
+        return memberrepository.getMemberId(memberId);
+    }
 }
